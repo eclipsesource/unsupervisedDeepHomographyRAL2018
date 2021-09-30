@@ -75,7 +75,6 @@ def _interpolate(im, x, y, out_size, scale_H = SCALE_H):
     # plt.subplot(224)
     # plt.imshow(Id)
     # cv2.waitKey(0)
-
     wa = (x1 -x) * (y1-y)
     wb = (x1-x) * (y-y0)
     wc = (x-x0) * (y1-y)
@@ -84,13 +83,11 @@ def _interpolate(im, x, y, out_size, scale_H = SCALE_H):
     
     # Handle multi channel image 
     if im.ndim == 3:
-      num_channels = im.shape[2]
-      wa = np.expand_dims(wa, 2)
-      wb = np.expand_dims(wb, 2)  
-      wc = np.expand_dims(wc, 2) 
-      wd = np.expand_dims(wd, 2) 
+      wa = np.expand_dims(wa, 1)
+      wb = np.expand_dims(wb, 1)  
+      wc = np.expand_dims(wc, 1) 
+      wd = np.expand_dims(wd, 1) 
     out = wa*Ia + wb*Ib + wc*Ic + wd*Id
-    # print '--shape of out:', out.shape
     return out 
 
 def _transform(theta, input_dim, out_size):
@@ -121,7 +118,6 @@ def _transform(theta, input_dim, out_size):
     x_s_flat = np.reshape(x_s, [-1])/t_s_flat
     y_s_flat = np.reshape(y_s, [-1])/t_s_flat
     
-
     input_transformed =  _interpolate(input_dim, x_s_flat, y_s_flat, out_size) 
     if input_dim.ndim == 3:
       output = np.reshape(input_transformed, [out_height, out_width, -1])
